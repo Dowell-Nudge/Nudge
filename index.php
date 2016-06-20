@@ -18,6 +18,16 @@ require 'config.php';
         <link href="assets/css/bootstrap.css" rel="stylesheet" media="screen">
         <link href="assets/css/main.css" rel="stylesheet" media="screen">
         <link href="assets/css/font-awesome.min.css" rel="stylesheet" media="screen">
+        <script type="text/javascript">
+			function validate(){
+				var form_not_valid = (document.getElementById('category').value == '0');
+				if(form_not_valid){
+					window.alert("Please select a category from the dropdown list.");
+					return false;
+				}
+				return true;
+			}
+		</script>
         <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
         <!--[if lt IE 9]>
         <script src="../../assets/js/html5shiv.js"></script>
@@ -27,32 +37,30 @@ require 'config.php';
     </head>
     <body>
         <header>
-    <!-- Fixed navbar -->
+		<!-- Fixed navbar -->
         <div class="navbar navbar-inverse navbar-fixed-top">
-      <div class="container">
-        <div class="navbar-header">
-          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-          <a href="index.php"><img src="assets/img/logo.png" width="100px"></a>
-        </div>
-        <div class="navbar-collapse collapse">
-          <ul class="nav navbar-nav navbar-right">
-            <li><a href="index.php">HOME</a></li>
-            <li><a href="about.html">ABOUT</a></li>
-            <li class="active"><a href="index.php">USE NUDGE</a></li>
-            <li><a href="comments.php">COMMENTS</a></li>
-            <li><a data-toggle="modal" data-target="#myModal" href="#myModal"><i class="fa fa-envelope-o"></i></a></li>
-          </ul>
-        </div><!--/.nav-collapse -->
-      </div>
-    </div>
-    <?php unset($_SESSION['name']); ?>
-    <p class="text-center">
-                Welcome  <?php if(!empty($_SESSION['name'])){echo $_SESSION['name'];} ?>
-            </p>
+		  <div class="container">
+			<div class="navbar-header">
+			  <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+			  </button>
+			  <a href="index.php"><img src="assets/img/logo.png" width="100px"></a>
+			</div>
+			<div class="navbar-collapse collapse">
+			  <ul class="nav navbar-nav navbar-right">
+				<li><a href="index.php">HOME</a></li>
+				<li><a href="about.html">ABOUT</a></li>
+				<li class="active"><a href="index.php">USE NUDGE</a></li>
+				<li><a href="comments.php">COMMENTS</a></li>
+				<li><a data-toggle="modal" data-target="#myModal" href="#myModal"><i class="fa fa-envelope-o"></i></a></li>
+			  </ul>
+			</div><!--/.nav-collapse -->
+		  </div>
+		</div>
+		<?php unset($_SESSION['name']); ?>
+		<p class="text-center">Welcome  <?php if(!empty($_SESSION['name'])){echo $_SESSION['name'];} ?></p>
         </header>
       
         <div class="container">
@@ -63,22 +71,21 @@ require 'config.php';
                     </div>
                 </div>
 
-         <div class="col-xs-10 col-sm-5 col-lg-5">
+				<div class="col-xs-10 col-sm-5 col-lg-5">
                     <div class="intro">
                         <h4 class="centered">
                             Please login
                         </h4> 
-                       </div>
-                  <form class="form-signin" method="post" id='signin' name="signin" action="copy2.php">
-                            <div class="form-group">
-                                <input type="text" id='name' name='name' class="form-control" placeholder="Enter your Username"/>
-                                <span class="help-block"></span>
-                            </div>
-                </div>
+                    </div>
+					<form class="form-signin" method="post" id='signin' action="copy2.php" name="signin" onsubmit="return validate()">
+                        <div class="form-group">
+                            <input type="text" id='name' name='name' class="form-control" placeholder="Enter your Username"/>
+                            <span class="help-block"></span>
+                        </div>
+				</div>
                 <div class="col-xs-10 col-sm-5 col-lg-5">
                     <div class="intro">
-                        <?php if(empty($_SESSION['name']))
-                               {?>
+                        <?php if(empty($_SESSION['name'])){?>
                         <form class="form-signin" method="post" id='signin' name="signin" action="copy2.php">
                             <div class="form-group">
                                 <input type="password" id='email' name='email' class="form-control" placeholder="Enter your password"/>
@@ -87,8 +94,8 @@ require 'config.php';
                             <div class="form-group">
                                 <select class="form-control" name="category" id="category">
                                     <option value="0">Choose your category</option>
-                                  <option value="temptest">temptest</option>
-				  <option value="Authorship">Authorship</option>
+									<option value="temptest">temptest</option>
+									<option value="Authorship">Authorship</option>
                                 </select>
                                 <span class="help-block"></span>
                             </div>
@@ -100,46 +107,43 @@ require 'config.php';
                         </form>
                         <br>
                         <br>
-			<div class="intro">	
-                        <h4 class="centered">
-                            Or Create a new account
-                        </h4>
-                       </div> 
-		<form class="form-signin" method="post" id='signin' name="signin" action="newuser.php">
+						<div class="intro">	
+							<h4 class="centered">Or Create a new account</h4>
+						</div> 
+						<form class="form-signin" method="post" id='signin' name="signin" action="newuser.php">
                             <div class="form-group">
                                 <input type="text" id='name' name='name' class="form-control" placeholder="Enter your Username"/>
                                 <span class="help-block"></span>
                             </div>
-		    <form class="form-signin" method="post" id='signin' name="signin" action="newuser.php">
+						<form class="form-signin" method="post" id='signin' name="signin" action="newuser.php">
                             <div class="form-group">
                                 <input type="text" id='email' name='email' class="form-control" placeholder="Enter your E-Mail"/>
                                 <span class="help-block"></span>
                             </div>
-				<form class="form-signin" method="post" id='signin' name="signin" action="newuser.php">
+						<form class="form-signin" method="post" id='signin' name="signin" action="newuser.php">
                             <div class="form-group">
                                 <input type="text" id='password' name='password' class="form-control" placeholder="Enter your Password"/>
                                 <span class="help-block"></span>
                             </div>
-				<br>
-                    <button class="btn btn-success btn-block" type="submit">
+							<br>
+							<button class="btn btn-success btn-block" type="submit">
                                 Next
                             </button> 
-</div> 
+					</div> 
                         <?php }else{?>
                             <form class="form-signin" method="post" id='signin' name="signin" action="storystartcopy.php">
                             <div class="form-group">
                                 <select class="form-control" name="category" id="category"
-                                    <option value="">Choose your category</option>
-                                  <option value=1>temptext</option>
-				  <option value=2>Authorship</option>
+                                    <option value="0">Choose your category</option>
+									<option value=1>temptext</option>
+									<option value=2>Authorship</option>
                                 </select>
                                 <span class="help-block"></span>
                             </div>
  
                             <br>
                             <button class="btn btn-success btn-block" type="submit">
-                                Next
-                             
+                                Next                        
                             </button>
                           
                         </form>
@@ -149,9 +153,7 @@ require 'config.php';
             </div>
         </div>
         <footer>
-            <p class="text-center" id="foot">
-                &copy; <a href="http://dowell.colorado.edu/" target="_blank">Dowell Lab 2014 </a>
-            </p>
+            <p class="text-center" id="foot">&copy; <a href="http://dowell.colorado.edu/" target="_blank">Dowell Lab 2014 </a></p>
         </footer>
         <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
         <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>

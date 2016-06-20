@@ -27,9 +27,14 @@ if(!empty($_SESSION['name'])){
     <head>
         <title>Responsive Quiz Application Using PHP, MySQL, jQuery, Ajax and Twitter Bootstrap</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <!-- Bootstrap -->
-        <link href="../assets/css/bootstrap.min.css" rel="stylesheet" media="screen">
-        <link href="../assets/css/style.css" rel="stylesheet" media="screen">
+        <!-- Bootstrap >
+        <link href="assets/css/bootstrap.min.css" rel="stylesheet" media="screen">
+        <link href="assets/css/style.css" rel="stylesheet" media="screen"-->
+        
+        <!-- Using style sheets for local server, remove later--> 
+        <link href="assets/css/bootstrap.css" rel="stylesheet" media="screen">
+        <link href="assets/css/main.css" rel="stylesheet" media="screen">
+        <link href="assets/css/font-awesome.min.css" rel="stylesheet" media="screen">
  
         <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
         <!--[if lt IE 9]>
