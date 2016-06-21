@@ -30,6 +30,13 @@ Style Sheets Linked [https://github.com/Dowell-Nudge/Nudge/tree/master/assets/cs
 * main.css
 * font-awesome.min.css    
 
+PHP Functions    
+| Name of Function     | Purpose     | line in index.php     | 
+| -------------------- | --------------- | --------------------- |
+| *require(config.php)* | Connect to Database | Line 10           |
+| *unset($_SESSION['name']);* | Clear Username | Line 62	  |
+| *empty($_SESSION['name'])* | Check if Username Exists | Line 63 and Line 88 |
+
 Main HTML Elements    
 
 | Type of Element     | Class/Id of Element                            | line in index.php     | 
@@ -61,9 +68,14 @@ Also, included in the class="form-signin" form is an onsubmit . Written as follo
 <br>
 The onsubmit attribute checks the boolean value returned by *validateCategory()*. The purpose of *validateCategory()* is to make sure a category has been selected by the user after entering their login credentials. If the user signs in with a username and password and fails to choose a category, a message will be displayed that reads, "Please select a category from the dropdown list." *validateCategory()* can be found in the <head> section of the index.php file on line 21 to 30      
 
+## copy2.php  
+***
 
+#### User Doc (copy2.php)
 
-
+After entering your credentials on the Nudge homepage, selecting a category, and clicking the next button to submit your information, if everything is correct you will come to the start of the game. You will be presented with the beggining of the story category that you chose on the previous page. You have options below that allow you to make a decision and begin your ethical journey through the rest of the developing story. Upon clicking next, you will be navigated to one of the possible outcomes as a consequence of the decision you chose.
   
+#### Technical Doc (copy2.php)
+
 
  
