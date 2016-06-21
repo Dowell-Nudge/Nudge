@@ -19,7 +19,7 @@ require 'config.php';
         <link href="assets/css/main.css" rel="stylesheet" media="screen">
         <link href="assets/css/font-awesome.min.css" rel="stylesheet" media="screen">
         <script type="text/javascript">
-			function validate(){
+			function validateCategory(){
 				var form_not_valid = (document.getElementById('category').value == '0');
 				if(form_not_valid){
 					window.alert("Please select a category from the dropdown list.");
@@ -77,7 +77,7 @@ require 'config.php';
                             Please login
                         </h4> 
                     </div>
-					<form class="form-signin" method="post" id='signin' action="copy2.php" name="signin" onsubmit="return validate()">
+					<form class="form-signin" method="post" id='signin' action="copy2.php" name="signin" onsubmit="return validateCategory()">
                         <div class="form-group">
                             <input type="text" id='name' name='name' class="form-control" placeholder="Enter your Username"/>
                             <span class="help-block"></span>
