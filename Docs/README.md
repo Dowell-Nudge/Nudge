@@ -31,6 +31,7 @@ Style Sheets Linked [https://github.com/Dowell-Nudge/Nudge/tree/master/assets/cs
 * font-awesome.min.css    
 
 PHP Functions    
+
 | Name of Function     | Purpose     | line in index.php     | 
 | -------------------- | --------------- | --------------------- |
 | *require(config.php)* | Connect to Database | Line 10           |
