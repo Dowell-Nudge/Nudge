@@ -8,6 +8,7 @@ There are three files that make up the meat of this project containing a combina
  1. index.php    
  2. copy2.php     
  3. storyloop.php     
+* 
 <br>
 index.php is used as the login/sign-up page. After login credentials are verified, copy2.php is called. This file is responsible for displaying the start of the story-line selected by the user in the dropdown category list from index.php. Along with the start of the selected story-line, copy2.php also displays the decisions the user can select for that starting scenario. Once a decision is selected by the user and they submit their answer by clicking next, storyloop.php is then called. This file renders the remaining outcomes and decisions for each storyline. Below is a description of each file, with a user section and a technical section.      
 
