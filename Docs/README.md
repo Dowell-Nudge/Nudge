@@ -28,21 +28,21 @@ Style Sheets Linked [https://github.com/Dowell-Nudge/Nudge/tree/master/assets/cs
 * main.css
 * font-awesome.min.css    
 
-Main HTML Elements      
-| **Type of Element** | **class or id of element**                     | **line in index.php** |
+Main HTML Elements    
+| Type of Element     | Class/Id of Element                            | line in index.php     |
 | ------------------- | ---------------------------------------------- | :-------------------: |
 | Fixed Nav-Bar       | class="navbar navbar-inverse navbar-fixed-top" | Line 41 to 59         | 
 | Form                | class="form-signin"                            | Line 80 to 149        | 
 | footer              | id="foot"                                      | Line 155 to 157       | 
 
-JavaScript Functions      
-| **Name of Function** | **Return Type** | **line in index.php** |
+JavaScript Functions   
+| Name of Function     | Return Type     | line in index.php     |
 | -------------------- | --------------- | --------------------- |
 | *validateCategory()* | boolean         | Line 21 to 30         | 
 
 
-jQuery Functions     
-| **Name of Function** | **Return Type** | **line in index.php** |
+jQuery Functions    
+| Name of Function     | Return Type     | line in index.php     |
 | -------------------- | --------------- | --------------------- |
 | *validate()*         | boolean         | Line 166 to 218       | 
 
@@ -50,10 +50,10 @@ jQuery Functions
 
 When the sign-in form is submitted by a current user, two different types of the form data are verified using JavaScript and jQuery.
 The jQuery validate() function is explained [HERE](https://jqueryvalidation.org/validate) and confirms that all form data was properly filled out. 
-Included in the class="form-signin" form is an onsubmit . Written as follows:      
-<br>     
-*onsubmit="return validateCategory()"*  
-<br>       
+Also, included in the class="form-signin" form is an onsubmit . Written as follows:      
+<br>
+*onsubmit="return validateCategory()"*
+<br>
 The onsubmit attribute checks the boolean value returned by *validateCategory()*. The purpose of *validateCategory()* is to make sure a category has been selected by the user after entering their login credentials. If the user signs in with a username and password and fails to choose a category, a message will be displayed that reads, "Please select a category from the dropdown list." *validateCategory()* can be found in the <head> section of the index.php file on line 21 to 30      
 
 
