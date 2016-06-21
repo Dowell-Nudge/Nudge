@@ -29,22 +29,22 @@ Style Sheets Linked [https://github.com/Dowell-Nudge/Nudge/tree/master/assets/cs
 * font-awesome.min.css    
 
 Main HTML Elements    
-| Type of Element     | Class/Id of Element                            | line in index.php     |
-| ------------------- | ---------------------------------------------- | :-------------------: |
-| Fixed Nav-Bar       | class="navbar navbar-inverse navbar-fixed-top" | Line 41 to 59         | 
-| Form                | class="form-signin"                            | Line 80 to 149        | 
-| footer              | id="foot"                                      | Line 155 to 157       | 
+| Type of Element     | Class/Id of Element                            | line in index.php     |    
+| ------------------- | ---------------------------------------------- | :-------------------: |    
+| Fixed Nav-Bar       | class="navbar navbar-inverse navbar-fixed-top" | Line 41 to 59         |    
+| Form                | class="form-signin"                            | Line 80 to 149        |    
+| footer              | id="foot"                                      | Line 155 to 157       |    
 
 JavaScript Functions   
-| Name of Function     | Return Type     | line in index.php     |
-| -------------------- | --------------- | --------------------- |
-| *validateCategory()* | boolean         | Line 21 to 30         | 
+| Name of Function     | Return Type     | line in index.php     |    
+| -------------------- | --------------- | --------------------- |    
+| *validateCategory()* | boolean         | Line 21 to 30         |    
 
 
 jQuery Functions    
-| Name of Function     | Return Type     | line in index.php     |
-| -------------------- | --------------- | --------------------- |
-| *validate()*         | boolean         | Line 166 to 218       | 
+| Name of Function     | Return Type     | line in index.php     |    
+| -------------------- | --------------- | --------------------- |    
+| *validate()*         | boolean         | Line 166 to 218       |    
 
 #### Form (index.php) 
 
