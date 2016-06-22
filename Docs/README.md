@@ -82,7 +82,7 @@ After entering your credentials on the Nudge homepage, selecting a category, and
 PHP Functions    
 
 | Name of Function     | Purpose     | line in index.php     | 
-| -------------------- | --------------- | --------------------- |
+| -------------------- | --------------------- | --------------------- |
 | *session_start()* |  | [Explained Here](http://php.net/manual/en/function.session-start.php) | Line 2    |
 | *require(config.php)* | Connect to Database | Line 10           |
 | *empty($_SESSION['name'])* | Check if Username Exists | Line 13 |
