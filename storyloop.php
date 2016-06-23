@@ -111,8 +111,8 @@ if(!empty($_SESSION['name'])){
 		</form>
 		<?php if($pos!=1){?>		<form class="form-horizontal" role="form" id='login' method="post" action="storyloop.php">
                     <?php
-		    $res2 = mysql_query("select * from answers where storylinetite='$gotostorylinetite' and storytitle='$category';") or die(mysql_error());
-		    ?>
+						$res2 = mysql_query("select * from answers where storylinetite='$gotostorylinetite' and storytitle='$category';") or die(mysql_error());
+					?>
 
 		    <div id='question<?php echo $i;?>' class='cont'>
                     <br/>
