@@ -52,8 +52,7 @@ Style Sheets Linked [https://github.com/Dowell-Nudge/Nudge/tree/master/assets/cs
 | *stripslashes()* | Removes slashes from a string   | String	  |
 
 **PHP/MySQL Driver Variables**    
-$userPassErr = $catErr = $newUserErr = $emailErr = $newPassErr = ""; //Error message variables
-$name = $email = $category = $password = "";
+
 | Name of Variable     | Purpose     | Type     | 
 | -------------------- | --------------- | --------------------- |
 | *$userPassErr*    | Error message for no password given | String   |
