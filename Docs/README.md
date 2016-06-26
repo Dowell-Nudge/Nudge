@@ -5,7 +5,7 @@ This directory explains the contents of the core files for Nudge.
 <br> 
 Shown below is a list of the main files. Each contains a combination of HTML5, CSS, PHP, and JavaScript/jQuery code.           
 * Main Files 
- * [index.php](#index\.php)    
+ * [index.php](#indexphp)    
  * copy2.php     
  * storyloop.php     
  * newuser.php   
