@@ -3,12 +3,16 @@
 
 This directory explains the contents of the core files for Nudge.      
 <br> 
-There are three files that make up the meat of this project containing a combination of HTML5, CSS, PHP, and JavaScript/jQuery code.           
+Shown below is a list of the main files. Each contains a combination of HTML5, CSS, PHP, and JavaScript/jQuery code.           
 * Main Files 
  * index.php    
  * copy2.php     
  * storyloop.php     
-
+ * newuser.php   
+ * index.html   
+ * about.html   
+ 
+####Program Flow for Game-Play
 index.php is used as the login/sign-up page. After login credentials are verified, copy2.php is called. This file is responsible for displaying the start of the story-line selected by the user in the dropdown category list from index.php. Along with the start of the selected story-line, copy2.php also displays the decisions the user can select for that starting scenario. Once a decision is selected by the user and they submit their answer by clicking next, storyloop.php is then called. This file renders the remaining outcomes and decisions for each storyline. Below is a description of each file, with a user section and a technical section.      
 
 ## index.php  
@@ -30,14 +34,22 @@ Style Sheets Linked [https://github.com/Dowell-Nudge/Nudge/tree/master/assets/cs
 * main.css
 * font-awesome.min.css    
 
-PHP Functions    
+PHP/MySQL Driver Functions    
 
-| Name of Function     | Purpose     | line in index.php     | 
+| Name of Function     | Purpose     | Return Type     | 
 | -------------------- | --------------- | --------------------- |
-| *session_start()*    | [Explained Here](http://php.net/manual/en/function.session-start.php) | Line 2    |
-| *require(config.php)* | Connect to Database | Line 10           |
-| *unset($_SESSION['name']);* | Clear Username | Line 62	  |
-| *empty($_SESSION['name'])* | Check if Username Exists | Line 63 and Line 88 |
+| *session_start()*    | [Explained Here](http://php.net/manual/en/function.session-start.php) | Boolean   |
+| *htmlspecialchars($_SERVER["PHP_SELF"])* | Check if information has been submitted by the user (input validation) | Boolean | 
+| *require(config.php)* | Connect to Database | Boolean          |
+| *isset($_POST['newUser'])* | Check if a user is creating a new account | Boolean        |
+| *filter_var($email, FILTER_VALIDATE_EMAIL)* | Validate email variable is in proper format | Boolean	  |
+| *mysqli_query()* | Performs a query against the database   | String	  |
+| *mysqli_fetch_array()* | Returns an array of strings that corresponds to the fetched row   | Array of strings |
+| header() | Redirects user to a new page | Boolean | 
+| *unset($_SESSION['name']);* | Clear Username | Boolean	  |
+| *empty($_SESSION['name'])* | Check if Username Exists | Boolean |
+| *trim()* | Removes whitespace from a string   | String	  |
+| *stripslashes()* | Removes slashes from a string   | String	  |
 
 Main HTML Elements    
 
@@ -47,28 +59,6 @@ Main HTML Elements
 | Form                | class="form-signin"                            | Line 80 to 149        |
 | footer              | id="foot"                                      | Line 155 to 157       | 
 
-JavaScript Functions   
-
-| Name of Function     | Return Type     | line in index.php     | 
-| -------------------- | --------------- | --------------------- |
-| *validateCategory()* | boolean         | Line 21 to 30         | 
-
-
-jQuery Functions    
-
-| Name of Function     | Return Type     | line in index.php     | 
-| -------------------- | --------------- | --------------------- | 
-| *validate()*         | boolean         | Line 166 to 218       | 
-
-#### Form (index.php) 
-
-When the sign-in form is submitted by a current user, two different types of the form data are verified using JavaScript and jQuery.
-The jQuery validate() function is explained [HERE](https://jqueryvalidation.org/validate) and confirms that all form data was properly filled out. 
-Also, included in the class="form-signin" form is an onsubmit . Written as follows:      
-<br>
-*onsubmit="return validateCategory()"*
-<br>
-The onsubmit attribute checks the boolean value returned by *validateCategory()*. The purpose of *validateCategory()* is to make sure a category has been selected by the user after entering their login credentials. If the user signs in with a username and password and fails to choose a category, a message will be displayed that reads, "Please select a category from the dropdown list." *validateCategory()* can be found in the <head> section of the index.php file on line 21 to 30      
 
 ## copy2.php  
 ***
@@ -81,7 +71,7 @@ After entering your credentials on the Nudge homepage, selecting a category, and
 
 PHP Functions    
 
-| Name of Function     | Purpose     | line in index.php     | 
+| Name of Function     | Purpose     | line in copy2.php     | 
 | -------------------- | --------------------- | --------------------- |
 | *session_start()*    | [Explained Here] | Line 2    |
 | *require(config.php)* | Connect to Database | Line 10           |

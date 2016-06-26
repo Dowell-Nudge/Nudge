@@ -11,6 +11,7 @@ require 'config.php';
 $category='';
 if(!empty($_POST['name'])){
      $name=$_POST['name'];
+     $_SESSION['name'] = $name; 
      $category=$_POST['category'];
      mysql_query("INSERT INTO users (id, user_name,score,category_id)VALUES ('NULL','$name',0,'$category')") or die(mysql_error());
      $_SESSION['name']= $name;
@@ -183,6 +184,10 @@ $tots = mysql_fetch_row($tots2);
         </footer>
  
 <?php } ?>
+
+<?php else{
+	print ("Oh no!!!!!!!!"); 
+}?>
  
     </body>
 </html>
