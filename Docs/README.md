@@ -89,16 +89,42 @@ After entering your credentials on the Nudge homepage, selecting a category, and
   
 #### Technical Doc (copy2.php)
 
-PHP Functions    
+**PHP/MySQL Driver Functions**    
 
-| Name of Function     | Purpose     | line in copy2.php     | 
-| -------------------- | --------------------- | --------------------- |
-| *session_start()*    | [Explained Here] | Line 2    |
-| *require(config.php)* | Connect to Database | Line 10           |
-| *empty($_SESSION['name'])* | Check if Username Exists | Line 13 |
-| *mysql_query(<MySQL statement>)* | 
-| *unset($_SESSION['name']);* | Clear Username | Line 62	  |
+| Name of Function     | Purpose     | Return Type     | 
+| -------------------- | --------------- | --------------------- |
+| *session_start()*    | [Explained Here](http://php.net/manual/en/function.session-start.php) | Boolean   |
+| *htmlspecialchars($_SERVER["PHP_SELF"])* | Check if information has been submitted by the user (input validation) | Boolean | 
+| *htmlspecialchars($row2['answer'])* | Encode answer choices for output | 
+| *require(config.php)* | Connect to Database | Boolean          |
+| *isset($_POST['newUser'])* | Check if a user is creating a new account | Boolean        |
+| *filter_var($email, FILTER_VALIDATE_EMAIL)* | Validate email variable is in proper format | Boolean	  |
+| *mysqli_query()* | Performs a query against the database   | String	  |
+| *mysqli_fetch_array()* | Returns an array of strings that corresponds to the fetched row   | Array of strings |
+| header() | Redirects user to a new page | Boolean | 
+| *unset($_SESSION['name']);* | Clear Username | Boolean	  |
+| *empty($_SESSION['name'])* | Check if Username Exists | Boolean |
 
-[Explained Here]: http://php.net/manual/en/function.session-start.php
+**PHP/MySQL Driver Variables**    
 
+| Name of Variable     | Purpose     | Type     | 
+| -------------------- | --------------- | --------------------- |
+| *$answerErr*    | Error message for no answer selected | String   |
+| *$name* | The current user's name   | String	  |
+| *$email* | The current user's password | String |
+| *$category* | Selected category by user | String | 
+| *$con* | Connection to database info | String |
+| *$res* | Contains MySQL query to select the beginning of the story category | String |
+| *$row* | Contains the information from the *$res* select statement | String |
+| *$thirdcol* | The beginning storyline from the third column in *row*  | String |
+| *$res2* | Contains MySQL query to select the answer choices for the beginning storyline | String |
+| *$row2* | Contains the information from the *$res2* select statement | Array of Strings |
+| *$_SESSION['theanswer']* | Answer selected by user | Session String	  |
+| *$_SESSION['name']* | Current user's username | Session String |
+| *$_SESSION['category']* | Selected category by user   | Session String	  |
+| *$_SESSION['storylinetite']* | Set to start because copy2.php begins the game | Session String | 
+| *$_POST["name"]* |  Username from login    | Post String	  |
+| *$_POST["email"]* | User's password from login   | Post String	  |
+| *$_POST["category"]* | Selected Category at login   | Post String	  |
+| *$_POST["theanswer"]* | Selected answer   | Post String	  |
  
