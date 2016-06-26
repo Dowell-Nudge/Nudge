@@ -34,7 +34,7 @@ Style Sheets Linked [https://github.com/Dowell-Nudge/Nudge/tree/master/assets/cs
 * main.css
 * font-awesome.min.css    
 
-PHP/MySQL Driver Functions    
+**PHP/MySQL Driver Functions**    
 
 | Name of Function     | Purpose     | Return Type     | 
 | -------------------- | --------------- | --------------------- |
@@ -51,7 +51,28 @@ PHP/MySQL Driver Functions
 | *trim()* | Removes whitespace from a string   | String	  |
 | *stripslashes()* | Removes slashes from a string   | String	  |
 
-Main HTML Elements    
+**PHP/MySQL Driver Variables**    
+$userPassErr = $catErr = $newUserErr = $emailErr = $newPassErr = ""; //Error message variables
+$name = $email = $category = $password = "";
+| Name of Variable     | Purpose     | Type     | 
+| -------------------- | --------------- | --------------------- |
+| *$userPassErr*    | Error message for no password given | String   |
+| *$catErr* | Error message for no category chosen | String | 
+| *$newUserErr* | Error message for invalid username | String          |
+| *$emailErr* | Error message for invalid email address | String        |
+| *$newPassErr* | Error message for no password given | String	  |
+| *$name* | The current user's name attempting to login   | String	  |
+| *$email* | The current user's password | String |
+| *$category* | Selected category by user attempting login | String | 
+| *$password* | Password for new account creation | String	  |
+| *$_SESSION['name']* | Current user's username | Session String |
+| *$_SESSION['category']* | Selected category by user logging in   | Session String	  |
+| *$_POST["name"]* |  User input from 'signin'    | Post String	  |
+| *$_POST["email"]* | User input from 'signin'   | Post String	  |
+| *$_POST["category"]* | User input from 'signin'   | Post String	  |
+| *$_POST["password"]* | User input from 'signin'   | Post String	  |
+
+**Main HTML Elements**    
 
 | Type of Element     | Class/Id of Element                            | line in index.php     | 
 | ------------------- | ---------------------------------------------- |:---------------------:| 
