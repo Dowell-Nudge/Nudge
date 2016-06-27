@@ -161,6 +161,8 @@ Once you have reached this file, you are in the middle of the game. This page is
 | *$answerErr*    | Error message for no answer selected | String   |
 | *$name* | The current user's name   | String	  |
 | *$category* | Selected category by user | String | 
+| *$pos* | Contains numerical code to distinguish if the current scenario in the game is a beginning - 0 , middle - 2 , or end - 1 | Integer | 
+| *$result* | MySQL SELECT statement to retrieve current scenario story | String| 
 | *$con* | Connection to database info | String |
 | *$res* | Contains MySQL query to SELECT the beginning of the story category | String |
 | *$row* | Contains the information from the *$res* select statement | String |
