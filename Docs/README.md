@@ -189,8 +189,6 @@ Once you have reached this file, you are in the middle of the game. This page is
 | *$_SESSION['category']* | Selected category by user   | Session String	  |
 | *$_SESSION['storylinetite']* | Set to start because copy2.php begins the game | Session String | 
 | *$_POST["name"]* |  Username from login    | Post String	  |
-| *$_POST["email"]* | User's password from login   | Post String	  |
-| *$_POST["category"]* | Selected Category at login   | Post String	  |
 | *$_POST["theanswer"]* | Selected answer   | Post String	  |
  
 
