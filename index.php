@@ -8,7 +8,69 @@ Author :Dowell Lab
  
 <?php
 require 'config.php';
-?>
+
+//Form Validation via PHP
+// define variables and set to empty values
+$userPassErr = $catErr = $newUserErr = $emailErr = $newPassErr = ""; //Error message variables
+$name = $email = $category = $password = ""; // login information 
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+	if (isset($_POST['newUser'])) { // Error checking for new user being created
+		$name = test_input($_POST["name"]); 
+		$email = test_input($_POST["email"]);
+		$password = test_input($_POST["password"]);
+		if (!filter_var($email, FILTER_VALIDATE_EMAIL) === false){
+			$q2=mysqli_query($con, "SELECT * from users where name='$name'") or die(mysql_error());
+			$r2=mysqli_fetch_array($q2);						
+			if(empty($r2) == true && !empty($password == true)){
+				//add username, email, and password to the database
+				mysqli_query($con, "INSERT INTO users (id, user_name,score,category_id,name,password )VALUES ('NULL','$email',0,5,'$name', '$password')") or die(mysql_error());
+				mysqli_query($con, "INSERT INTO played (name) VALUES('$name')") or die(mysql_error());
+				header("Location: newuser.php"); 
+			} else{
+				if(empty($password) == true){
+					$newPassErr = "Please type in a password."; 
+				} else { 
+					$newUserErr = "User name is already taken."; 
+				}
+			}
+			
+		} else {
+			$emailErr = "Invalid email address."; 
+		} 
+	}
+	if (isset($_POST['currentUser'])) { // Validating login information of a current user. 
+	  $name = test_input($_POST["name"]);
+	  $email = test_input($_POST["email"]);
+	  $category = test_input($_POST["category"]); 
+	  $q2=mysqli_query($con, "SELECT * from users where name='$name' and password='$email'") or die(mysql_error());
+	  $r2=mysqli_fetch_array($q2);
+	  
+	  if(!empty($r2) && $category != "0"){
+		$_SESSION['category'] = $category; 
+		$_SESSION['name'] = $name;  
+		header("Location: copy2.php"); 
+		exit(); 
+	  } else{
+		if(empty($r2)){
+			$userPassErr = "Incorrect Username or Password"; 
+		} 
+		if($category == "0"){
+			$catErr = "Please select a category"; 
+		}
+	  }
+	} 
+}
+
+function test_input($data) {
+  $data = trim($data);
+  $data = stripslashes($data);
+  $data = htmlspecialchars($data);
+  return $data;
+} //-- End of Form Validation 
+?> 
+
+
 <!DOCTYPE html>
 <html>
     <head>
@@ -18,22 +80,11 @@ require 'config.php';
         <link href="assets/css/bootstrap.css" rel="stylesheet" media="screen">
         <link href="assets/css/main.css" rel="stylesheet" media="screen">
         <link href="assets/css/font-awesome.min.css" rel="stylesheet" media="screen">
-        <script type="text/javascript">
-			function validateCategory(){
-				var form_not_valid = (document.getElementById('category').value == '0');
-				if(form_not_valid){
-					window.alert("Please select a category from the dropdown list.");
-					return false;
-				}
-				return true;
-			}
-		</script>
         <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
         <!--[if lt IE 9]>
         <script src="../../assets/js/html5shiv.js"></script>
         <script src="../../assets/js/respond.min.js"></script>
         <![endif]-->
- 
     </head>
     <body>
         <header>
@@ -62,7 +113,6 @@ require 'config.php';
 		<?php unset($_SESSION['name']); ?>
 		<p class="text-center">Welcome  <?php if(!empty($_SESSION['name'])){echo $_SESSION['name'];} ?></p>
         </header>
-      
         <div class="container">
             <div class="row">
                 <div class="col-xs-14 col-sm-7 col-lg-7">
@@ -77,16 +127,16 @@ require 'config.php';
                             Please login
                         </h4> 
                     </div>
-					<form class="form-signin" method="post" id='signin' action="copy2.php" name="signin" onsubmit="return validateCategory()">
+					<form class="form-signin" method="post" id='signin' action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" name="signin">
                         <div class="form-group">
                             <input type="text" id='name' name='name' class="form-control" placeholder="Enter your Username"/>
-                            <span class="help-block"></span>
+                            <span class="help-block"><?php echo $userPassErr;?></span>
                         </div>
 				</div>
                 <div class="col-xs-10 col-sm-5 col-lg-5">
                     <div class="intro">
                         <?php if(empty($_SESSION['name'])){?>
-                        <form class="form-signin" method="post" id='signin' name="signin" action="copy2.php">
+                        <form class="form-signin" method="post" id='signin' name="signin">
                             <div class="form-group">
                                 <input type="password" id='email' name='email' class="form-control" placeholder="Enter your password"/>
                                 <span class="help-block"></span>
@@ -97,11 +147,11 @@ require 'config.php';
 									<option value="temptest">temptest</option>
 									<option value="Authorship">Authorship</option>
                                 </select>
-                                <span class="help-block"></span>
+                                <span class="help-block"><?php echo $catErr;?></span>
                             </div>
  
                             <br>
-                            <button class="btn btn-success btn-block" type="submit">
+                            <button class="btn btn-success btn-block" type="submit" name="currentUser">
                                 Next
                             </button>
                         </form>
@@ -110,43 +160,29 @@ require 'config.php';
 						<div class="intro">	
 							<h4 class="centered">Or Create a new account</h4>
 						</div> 
-						<form class="form-signin" method="post" id='signin' name="signin" action="newuser.php">
+						<form class="form-signin" method="post" id='newUserSignIn' name="newUserSignIn">
                             <div class="form-group">
                                 <input type="text" id='name' name='name' class="form-control" placeholder="Enter your Username"/>
-                                <span class="help-block"></span>
+                                <span class="help-block"><?php echo $newUserErr;?></span>
                             </div>
-						<form class="form-signin" method="post" id='signin' name="signin" action="newuser.php">
+						<form class="form-signin" method="post" id='newUserSignIn' name="newUserSignIn" action="newuser.php">
                             <div class="form-group">
                                 <input type="text" id='email' name='email' class="form-control" placeholder="Enter your E-Mail"/>
-                                <span class="help-block"></span>
+                                <span class="help-block"><?php echo $emailErr;?></span>
                             </div>
-						<form class="form-signin" method="post" id='signin' name="signin" action="newuser.php">
+						<form class="form-signin" method="post" id='newUserSignIn' name="newUserSignIn" action="newuser.php">
                             <div class="form-group">
                                 <input type="text" id='password' name='password' class="form-control" placeholder="Enter your Password"/>
-                                <span class="help-block"></span>
+                                <span class="help-block"><?php echo $newPassErr;?></span>
                             </div>
 							<br>
-							<button class="btn btn-success btn-block" type="submit">
+							<button class="btn btn-success btn-block" type="submit" name="newUser">
                                 Next
                             </button> 
 					</div> 
                         <?php }else{?>
-                            <form class="form-signin" method="post" id='signin' name="signin" action="storystartcopy.php">
-                            <div class="form-group">
-                                <select class="form-control" name="category" id="category"
-                                    <option value="0">Choose your category</option>
-									<option value=1>temptext</option>
-									<option value=2>Authorship</option>
-                                </select>
-                                <span class="help-block"></span>
-                            </div>
- 
-                            <br>
-                            <button class="btn btn-success btn-block" type="submit">
-                                Next                        
-                            </button>
-                          
-                        </form>
+								 <h1>Critical Error.</h1>
+								 <h1><a href="http://localhost/Nudge/index.php">Click here to return to login screen.</a></h1> 
                         <?php }?>
                     </div>
                 </div>
@@ -155,68 +191,5 @@ require 'config.php';
         <footer>
             <p class="text-center" id="foot">&copy; <a href="http://dowell.colorado.edu/" target="_blank">Dowell Lab 2014 </a></p>
         </footer>
-        <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-        <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
- 
-        <!-- Include all compiled plugins (below), or include individual files as needed -->
-        <script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.9/jquery.validate.min.js"</script>
- 
-        <script>
-            $(document).ready(function() {
-                $("#signin").validate({
-                    submitHandler : function() {
-                        console.log(form.valid());
-                        if (form.valid()) {
-                            alert("sf");
-                            return true;
-                        } else {
-                            return false;
-                        }
- 
-                    },
-                    rules : {
-                        name : {
-                            required : true,
-                            minlength : 3,
-                            remote : {
-                                url : "check_name.php",
-                                type : "post",
-                                data : {
-                                    username : function() {
-                                        return $("#name").val();
-                                    }
-                                }
-                            }
-                        },
-                        category:{
-                            required : true
-                        }
-                    },
-                    messages : {
-                        name : {
-                            required : "Please enter your name",
-                            remote : "Name is already taken, Please choose some other name"
-                        },
-                        category:{
-                            required : "Please choose your category to start Quiz"
-                        }
-                    },
-                    errorPlacement : function(error, element) {
-                        $(element).closest('.form-group').find('.help-block').html(error.html());
-                    },
-                    highlight : function(element) {
-                        $(element).closest('.form-group').removeClass('has-success').addClass('has-error');
-                    },
-                    success : function(element, lab) {
-                        var messages = new Array("That's Great!", "Looks good!", "You got it!", "Great Job!", "Smart!", "That's it!");
-                        var num = Math.floor(Math.random() * 6);
-                        $(lab).closest('.form-group').find('.help-block').text(messages[num]);
-                        $(lab).addClass('valid').closest('.form-group').removeClass('has-error').addClass('has-success');
-                    }
-                });
-            });
-        </script>
- 
     </body>
 </html>

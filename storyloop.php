@@ -11,15 +11,30 @@ require 'config.php';
 $category='';
 if(!empty($_POST['name'])){
      $name=$_POST['name'];
-     $_SESSION['name'] = $name; 
      $category=$_POST['category'];
-     mysql_query("INSERT INTO users (id, user_name,score,category_id)VALUES ('NULL','$name',0,'$category')") or die(mysql_error());
+     mysqli_query($con, "INSERT INTO users (id, user_name,score,category_id)VALUES ('NULL','$name',0,'$category')") or die(mysql_error());
      $_SESSION['name']= $name;
      $_SESSION['id'] = mysql_insert_id();
 }
 $category=$_SESSION['category'];
-$theanswer=$_POST['theanswer'];
+$theanswer=$_SESSION['theanswer'];
 $storylinetite=$_SESSION['storylinetite'];
+
+//Verify an answer choice was made before moving on to the next page. 
+$answerErr = ""; 
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+	if(!empty($_POST['theanswer'])){
+		$_SESSION['theanswer'] = $_POST['theanswer']; 
+		$_SESSION['storylinetite']=$_SESSION['gotostorylinetite'];
+		header("Location: storyloop.php"); 
+		exit();
+	} else{
+		$answerErr = "Please select an answer choice to move on."; 
+	}
+}// End of answer choice verification
+
+
 if(!empty($_SESSION['name'])){
 ?>
 
@@ -90,74 +105,84 @@ if(!empty($_SESSION['name'])){
                 <p>
                     Responsible conduct of research
                 </p>
+                <span class="help-block"><?php echo $answerErr;?></span>
                 <hr>
-                <form class="form-horizontal" role="form" id='login' method="post">
+                <form class="form-horizontal" role="form" id='loadStory' method="post">
                     <?php
-		    $randnum=rand(0,100);
-                    $goto = mysql_query("select gotostorylinetite  from results where storytitle='$category' and storylinetite='$storylinetite' and answer='$theanswer' and startprob<'$randnum' and stopprob>='$randnum';") or die(mysql_error());
-		    $rows = mysql_num_rows($goto);
-                    $row = mysql_fetch_row($goto);
-		    $gotostorylinetite = $row[0];
-		    echo nl2br("\n");
-		    $res = mysql_query("select * from storytable where storytitle='$category' and storylinetite='$gotostorylinetite'") or die(mysql_error());
-                    $row = mysql_fetch_row($res);
-                    $secondcol = $row[2];
-                    $thirdcol = $row[3];
-		    $pos = $row[4];
-                    echo nl2br("\n");
-                    print($thirdcol);
-		    $i=1;
-		    $_SESSION['storylinetite']=$gotostorylinetite;
-		    ?>
-		</form>
-		<?php if($pos!=1){?>		<form class="form-horizontal" role="form" id='login' method="post" action="storyloop.php">
-                    <?php
-						$res2 = mysql_query("select * from answers where storylinetite='$gotostorylinetite' and storytitle='$category';") or die(mysql_error());
-					?>
+						$pos = -1; //initialize position to negative one. This is for the event that the user forgets to select an answer. 
+									// We still want to display the previous scenario and answer choices. $pos holds the value of whether the current scenario is an end, beginning, or middle
+						$randnum=rand(0,100);
+						
+						$result = mysqli_query($con, "select gotostorylinetite  from results where storytitle='$category' and storylinetite='$storylinetite' and answer='$theanswer' and startprob<'$randnum' and stopprob>='$randnum';"); 
 
-		    <div id='question<?php echo $i;?>' class='cont'>
-                    <br/>
-		    <?php while($row = mysql_fetch_array($res2)){?>
-		    <input type="radio" value="<?php echo htmlspecialchars($row['answer']); ?>" name="theanswer" /><?php echo " ";?><?php echo $row['answerchoice'];?>
-		    <br/>
-		    <?php }?>	
-		   <br/>	
-		   </div>
-		   <button class="btn btn-success btn-block" type="submit">
-                                Next
-                            </button>
-                </form>
+						$row_cnt = mysqli_num_rows($result);
+						
+						$row = mysqli_fetch_row($result); // $row at this point only contains one value, the title of the next scenario, known as gotostorylinetite. 
+						
+						if(!empty($row)){
+							$gotostorylinetite = $row[0]; 
+							echo nl2br("\n");
+							$res = mysqli_query($con, "select * from storytable where storytitle='$category' and storylinetite='$gotostorylinetite'") or die(mysql_error());
+							$row = mysqli_fetch_row($res);
+							$secondcol = $row[2]; // secondcol contains storylinetite(I call this the scenario title)
+							$thirdcol = $row[3]; // thirdcol contains the storyline for the scenario title
+							$pos = $row[4]; // pos keeps track of whether the current scenario title is a start - 0   end - 1   or   middle - 2
+							echo nl2br("\n");
+							print($thirdcol); 
+							$i=1;
+							$_SESSION['gotostorylinetite'] = $gotostorylinetite;  
+						} else {
+							//Do nothing because an answer was not selected and we want to load the same scenario and answers from before. Do this until the user 
+							// chooses an answer choice. 
+						}
+					?>
+				</form>
+		<?php if($pos!=1){?>
+			<form class="form-horizontal" role="form" id='login' method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">
+            <?php
+				$res2 = mysqli_query($con, "select * from answers where storylinetite='$gotostorylinetite' and storytitle='$category';") or die(mysql_error());
+		    ?>
+			<div id='question<?php echo $i;?>' class='cont'>
+				<br/>
+				<?php while($row = mysqli_fetch_array($res2)){?>
+					<input type="radio" value="<?php echo htmlspecialchars($row['answer']); ?>" name="theanswer" /><?php echo " ";?><?php echo $row['answerchoice'];?>
+					<br/>
+				<?php }?>	
+				<br/>	
+		    </div>
+		    <button class="btn btn-success btn-block" type="submit">Next</button>
+            </form>
 		<?php } else {?>
  
 <?php  
 $K=$row[0];
-$final= mysql_query("select * from rewardss where end_id='$K';") or die(mysql_error());
-$finalrow = mysql_fetch_row($final);
+$final= mysqli_query($con, "select * from rewardss where end_id='$K';") or die(mysql_error());
+$finalrow = mysqli_fetch_row($final);
 $statement = $finalrow[2];
 $points = $finalrow[3];
 $endid = $finalrow[6];
 $name=  $_SESSION['name'];
-$QU= mysql_query("select * from users where name ='$name';") or die(mysql_error());
-$QRow= mysql_fetch_row($QU);
+$QU= mysqli_query($con, "select * from users where name ='$name';") or die(mysql_error());
+$QRow= mysqli_fetch_row($QU);
 $score = $QRow[2];
 
 
-$in = mysql_query("INSERT INTO  play(name, storyname, ending) VALUES('$name', '$category', '$endid')") or die(mysql_error());  
+$in = mysqli_query($con, "INSERT INTO  play(name, storyname, ending) VALUES('$name', '$category', '$endid')") or die(mysql_error());  
 $total= $score+$points;
 
-$count = mysql_query("SELECT COUNT(Distinct ending) from play where storyname='$category' and name='$name';") or die(mysql_error());
-$scorerow = mysql_fetch_row($count);
+$count = mysqli_query($con, "SELECT COUNT(Distinct ending) from play where storyname='$category' and name='$name';") or die(mysql_error());
+$scorerow = mysqli_fetch_row($count);
 
 ?>
  
   <h3> <?php print($statement); ?> </h3>
   <h3> Worth  <?php print($points); ?>  points! </h3>
 
-<?php  mysql_query("UPDATE users SET score=$total WHERE name ='$name';"); 
+<?php  mysqli_query($con, "UPDATE users SET score=$total WHERE name ='$name';"); 
 
 
-$tots2 = mysql_query("SELECT COUNT(*) from rewardss;");
-$tots = mysql_fetch_row($tots2);
+$tots2 = mysqli_query($con, "SELECT COUNT(*) from rewardss;");
+$tots = mysqli_fetch_row($tots2);
 
 ?>
 <br>
@@ -183,11 +208,9 @@ $tots = mysql_fetch_row($tots2);
             </p>
         </footer>
  
-<?php } ?>
-
-<?php else{
-	print ("Oh no!!!!!!!!"); 
-}?>
+<?php } else{
+			echo "Oh no"; 
+		}?>
  
     </body>
 </html>

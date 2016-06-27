@@ -9,23 +9,37 @@ Author :muni
  
 <?php
 require 'config.php';
-$category='';
+
+echo $_SESSION['name']; 
+
+$category = ""; 
+$category = $_SESSION['category'];
+ 
 if(!empty($_POST['name'])){     
-     $name=$_POST['name'];
+	 $name=$_POST['name'];
      $email=$_POST['email'];
      $category=$_POST['category'];
      $_SESSION['name']= $name;
-     $_SESSION['id'] = mysql_insert_id();
+     $_SESSION['id'] = mysqli_insert_id($con);
 }
+$_POST['category'] = $category; 
 
-$category=$_POST['category'];
-$_SESSION['category']=$_POST['category'];
-$q2=mysql_query("SELECT * from users where name='$name' and password='$email'") or die(mysql_error());
-$r2=mysql_fetch_array($q2);
 
-if(!empty($r2)){
+//Verify an answer choice was made before moving on to the next page. 
+$answerErr = ""; 
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+	if(isset($_POST['theanswer'])){
+		$_SESSION['theanswer'] = $_POST['theanswer']; 
+		echo $_SESSION['name'];  
+		header("Location: storyloop.php"); 
+		exit(); 
+	} else{
+		$answerErr = "Please select an answer choice to move on."." ".$_SESSION['name']; 
+		
+	}
+}// End of answer choice verification
 ?>
-
 <!DOCTYPE html>
 <html>
     <head>
@@ -88,39 +102,38 @@ if(!empty($r2)){
                 <p>
                     Responsible conduct of research
                 </p>
+                <span class="help-block"><?php echo $answerErr;?></span>
                 <hr>
                 <form class="form-horizontal" role="form" id='login' method="post">
                     <?php
-                    $res = mysql_query("select * from storytable where storytitle='$category' and position=0") or die(mysql_error());
-                    $row = mysql_fetch_row($res);
-		    $secondcol = $row[2];
-		    $thirdcol = $row[3];
-		    echo nl2br("\n");
-		    print($thirdcol); //prints storyline from storytable
-		    $i=1;
-		    ?>
-		</form>
-		<form class="form-horizontal" role="form" id='login' method="post" action="storyloop.php">
+                    $res = mysqli_query($con, "select * from storytable where storytitle='$category' and position=0") or die(mysql_error());
+                    $row = mysqli_fetch_row($res);
+					$thirdcol = $row[3];
+					echo nl2br("\n");
+					print($thirdcol); //prints storyline from storytable
+					$i=1;
+					?>
+				</form>
+				<form class="form-horizontal" role="form" id='login' method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">
                     <?php
-		    $_SESSION['storylinetite']='start';
-                    $res2 = mysql_query("select * from answers where storylinetite='start' and storytitle='$category';") or die(mysql_error());
-		    $n=1;
-		    ?>
-		    <div id='question<?php echo $i;?>' class='cont'>
-                    <br/>
-		    <?php while($row = mysql_fetch_array($res2)){?>
-		    <input type="radio" value="<?php echo htmlspecialchars($row['answer']); ?>" name="theanswer" /><?php echo " ";?><?php echo $row['answerchoice'];?>
-		    <br/>
-		    <?php $n++; }?>
-		   <br/>
-		   </div>
-		   <button class="btn btn-success btn-block" type="submit">
-                                Next
-                            </button>
-                </form>
-		</hr>
+						$_SESSION['storylinetite']='start';
+						$res2 = mysqli_query($con, "select * from answers where storylinetite='start' and storytitle='$category';") or die(mysql_error());
+						$n=1;
+					?>
+				<div id='question<?php echo $i;?>' class='cont'>
+                  <br/>
+				<?php while($row2 = mysqli_fetch_array($res2)){?>
+				<input type="radio" value="<?php echo htmlspecialchars($row2['answer']); ?>" name="theanswer" /><?php echo " ";?><?php echo $row2['answerchoice'];?>
+				  <br/>
+				<?php $n++; }?>
+		          <br/>
+				</div>
+				<button class="btn btn-success btn-block" type="submit">Next</button>
+				  <span class="help-block"><?php echo $answerErr;?></span>
+				</form>
+		        </hr>
             </div>
-	</div>
+	   </div>
 
        <footer>
             <p class="text-center" id="foot">
@@ -130,7 +143,4 @@ if(!empty($r2)){
  
     </body>
 </html>
-<?php
-}else{
-echo "Username or Password incorrect";
-}
+
