@@ -262,14 +262,14 @@ The name of the database utilized by Nudge is named nudge. Below are the tables 
 
 | # | Tables | 
 | ---- | ------ | 
-| 1 | answers | 
-| 2 | comments | 
-| 3 | play | 
-| 4 | played | 
-| 5 | results | 
-| 6 | rewardss | 
-| 7 | storytable | 
-| 8 | users | 
+| 1 | [answers](#answers) | 
+| 2 | [comments](#comments) | 
+| 3 | [play](#play) | 
+| 4 | [played](#played) | 
+| 5 | [results](#results) | 
+| 6 | [rewardss](#rewardss) | 
+| 7 | [storytable](#storytable) | 
+| 8 | [users](#users) | 
 
 ###Data Definitions for Each Table
 ***
