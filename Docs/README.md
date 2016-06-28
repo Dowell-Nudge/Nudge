@@ -3,17 +3,19 @@
 
 This directory explains the contents of the core files for Nudge.      
 <br> 
-Shown below is a list of the main files. Each contains a combination of HTML5, CSS, PHP, and JavaScript/jQuery code.           
+Shown below is a list of the main files. Each contains a combination of HTML5, CSS, PHP.           
 * Main Files 
  * [index.php](#indexphp)    
  * [copy2.php](#copy2php)     
  * [storyloop.php](#storyloopphp)     
- * newuser.php   
- * index.html   
- * about.html   
+ * [newuser.php](#newuserphp)   
+ * [index.html](#indexhtml)   
+ * [about.html](#abouthtml)   
+* MySQL Database
+ * [nudge](#nudge)   
  
 ####Program Flow for Game-Play
-index.php is used as the login/sign-up page. After login credentials are verified, copy2.php is called. This file is responsible for displaying the start of the story-line selected by the user in the dropdown category list from index.php. Along with the start of the selected story-line, copy2.php also displays the decisions the user can select for that starting scenario. Once a decision is selected by the user and they submit their answer by clicking next, storyloop.php is then called. This file renders the remaining outcomes and decisions for each storyline. Below is a description of each file, with a user section and a technical section.      
+index.php is used as the login/sign-up page. After login credentials are verified, they are inserted into the 'users' table in the nudge database, then copy2.php is called. This file is responsible for displaying the start of the story-line selected by the user in the dropdown category list from index.php. The beginning story-scenario is queried from the 'storytable' table and displayed. Along with the start of the selected story-line, copy2.php also renders the decisions the user can select for that starting scenario by querying the 'answers' table. Once a decision is selected by the user and they submit their answer by clicking next, storyloop.php is then called. This file renders the remaining outcomes and decisions for each storyline utilizing the 'results', 'storytable', and 'answers' tables from the nudge database. Below is a description of each file, with a user section and a technical section.      
 
 ##index.php  
 ***
@@ -146,7 +148,6 @@ Once you have reached this file, you are in the middle of the game. This page is
 | *htmlspecialchars($_SERVER["PHP_SELF"])* | Check if information has been submitted by the user (input validation) | Boolean | 
 | *htmlspecialchars($row2['answer'])* | Encode answer choices for output | 
 | *require(config.php)* | Connect to Database | Boolean          |
-| *isset($_POST['newUser'])* | Check if a user is creating a new account | Boolean        |
 | *filter_var($email, FILTER_VALIDATE_EMAIL)* | Validate email variable is in proper format | Boolean	  |
 | *mysql_query()* | Performs a query against the database   | String	  |
 | *mysql_fetch_array()* | Returns an array of strings that corresponds to the fetched row   | Array of strings |
@@ -161,6 +162,7 @@ Once you have reached this file, you are in the middle of the game. This page is
 | *$answerErr*    | Error message for no answer selected | String   |
 | *$name* | The current user's name   | String	  |
 | *$category* | Selected category by user | String | 
+| *$randnum* | Random number between 0 and 100, generated for underlying probability model | Integer | 
 | *$pos* | Contains numerical code to distinguish if the current scenario in the game is a beginning - 0 , middle - 2 , or end - 1 | Integer | 
 | *$result* | MySQL SELECT statement to retrieve current scenario story | String| 
 | *$con* | Connection to database info | String |
@@ -190,5 +192,177 @@ Once you have reached this file, you are in the middle of the game. This page is
 | *$_SESSION['storylinetite']* | Set to start because copy2.php begins the game | Session String | 
 | *$_POST["name"]* |  Username from login    | Post String	  |
 | *$_POST["theanswer"]* | Selected answer   | Post String	  |
- 
+
+## newuser.php  
+***
+
+#### User Doc (newuser.php)
+
+After entering the correct credentials on the Nudge homepage for creating a new acccount you will be brought to this newuser.php. This page is responsible for displaying a thank you message and confirming that your account was created. There is a link on the page to click in order to go back to the login screen in order to login to the system. 
+  
+#### Technical Doc (newuser.php)
+
+**Main HTML Elements**    
+
+| Type of Element     | Class/Id of Element                            | line in index.php     | 
+| ------------------- | ---------------------------------------------- |:---------------------:| 
+| div       | *class="navbar navbar-inverse navbar-fixed-top"* | Line 40 - 58         |
+| Header                | *<header>*                           | Line 59 - 63        |
+| div              | *class="centered"*                                    | Line 64 - 67       | 
+| Footer	| *<footer>* | Line 68 - 72 |
+
+## index.html  
+***
+
+#### User Doc (index.html)
+
+You can reach this page from anywhere on the Nudge website by clicking on the 'Home' indentifier in the Navigation Bar on the top of any page. This page displays the purpose of the Nudge project and the source of funding.  
+  
+#### Technical Doc (index.html)
+
+| Type of Element     | Class/Id of Element                            | line in index.php     | 
+| ------------------- | ---------------------------------------------- |:---------------------:| 
+| div       | *class="navbar navbar-inverse navbar-fixed-top"* | Line 31 - 51         |
+| div                | *id="headerwrap"*                           | Line 53 - 62        |
+| div              | *<div id="r">*                                    | Line 135 - 147       | 
+| div              | *<div id="lg">*                                    | Line 149 - 159       | 
+| div	| *id="f"* | Line 163 - 171 | 
+| div              | *class="modal fade"*                               | Line 207 - 176       |
+
+
+## about.html  
+***
+
+#### User Doc (about.html)
+
+This page displays the team that created Nudge. There are pictures of the developers and contributors along with their contact information. 
+    
+#### Technical Doc (about.html)
+
+| Type of Element     | Class/Id of Element                            | line in index.php     | 
+| ------------------- | ---------------------------------------------- |:---------------------:| 
+| div       | *class="navbar navbar-inverse navbar-fixed-top"* | Line 33 - 53         |
+| div                | *id="blue"*                           | Line 55 - 64        |
+| div              | *id="container w"*                                    | Line 67 - 106       | 
+| div              | *class="col-lg-3"*                                    | Line 70 - 75       |
+| div              | *<class="col-lg-3"*                                    | Line 77 - 82       |
+| div              | *class="col-lg-3"*                                    | Line 84 - 89       |
+| div              | *class="col-lg-3"*                                    | Line 91 - 96       |
+| div              | *class="col-lg-3"*                                    | Line 98 - 103       |
+| div              | *<div id="r">*                                    | Line 208 - 217        |
+| div	| *id="f"* | Line 221 - 227 | 
+| div              | *class="modal fade"*                               | Line 232 - 263       |
+
+
+## nudge
+
+The name of the database utilized by Nudge is named nudge. Below are the tables and data definitions for the nudge database. There are two tables in the database, 'categories' and 'questions', which will not be mentioned because they are not used for Nudge itself.  
+
+**Nudge Database**
+| Tables | 
+| ------ | 
+| answers | 
+| comments | 
+| play | 
+| played | 
+| results | 
+| rewardss | 
+| storytable | 
+| users | 
+
+###Data Definitions for Each Table
+***
+
+#### answers 
+
+| # | Name | Type | Default | 
+| ------ | ---- | ---- | ---- |
+| 1 | storytitle | text | NULL |
+| 2 | storylinetite | text | NULL |
+| 3 | answer | tinytext | NULL |
+| 4 | answerchoice | longtext | NULL |
+     
+#### comments 
+
+| # | Name | Type | Default | 
+| ------ | ---- | ---- | ---- |
+| 1 | id | int(11) | NULL |
+| 2 | name | varchar(30) | NULL |
+| 3 | email | varchar(30) | NULL |
+| 4 | comment | varchar(100) | NULL |
+
+#### play
+
+| # | Name | Type | Default | 
+| ------ | ---- | ---- | ---- |
+| 1 | id | int(11) | AUTO_INCREMENT |
+| 2 | name | varchar(255) | NULL |
+| 3 | storyname | varchar(255) | NULL |
+| 4 | ending | varchar(255) | NULL |
+
+#### played 
+
+| # | Name | Type | Default | 
+| ------ | ---- | ---- | ---- |
+| 1 | id | int(11) | AUTO_INCREMENT |
+| 2 | name | varchar(255) | NULL |
+| 3 | e1 | int(11) | NULL |
+| 4 | e2 | int(11) | NULL |
+| 5 | e3 | int(11) | NULL |
+| 6 | e4 | int(11) | NULL |
+| 7 | e5 | int(11) | NULL |
+| 8 | e6 | int(11) | NULL |
+| 9 | e7 | int(11) | NULL |
+| 10 | e8 | int(11) | NULL |
+
+#### results 
+
+| # | Name | Type | Default | 
+| ------ | ---- | ---- | ---- |
+| 1 | id | int(11) | NULL |
+| 2 | storytitle | text | NULL |
+| 3 | storylinetite | text | NULL |
+| 4 | answer | tinytext | NULL |
+| 5 | startprob | int(11) | NULL |
+| 6 | stopprob | int(11) | NULL |
+| 7 | gotostorylinetite | text | NULL |
+
+#### rewardss 
+
+| # | Name | Type | Default | 
+| ------ | ---- | ---- | ---- |
+| 1 | id | int(11) | AUTO_INCREMENT |
+| 2 | reward | varchar(255) | NULL |
+| 3 | statement | text | NULL |
+| 4 | points | int(11) | NULL |
+| 5 | end_id | int(11) | NULL |
+| 6 | image | blob | NULL |
+| 7 | end | varchar(4) | NULL |
+
+#### storytable 
+| # | Name | Type | Default | 
+| ------ | ---- | ---- | ---- |
+| 1 | id | int(11) | NULL |
+| 2 | storytitle | text | NULL |
+| 3 | storylinetite | text | NULL |
+| 4 | storyline | longtext | NULL |
+| 5 | position | int(11) | NULL |
+
+
+#### users 
+
+| # | Name | Type | Default | 
+| ------ | ---- | ---- | ---- |
+| 1 | id | int(11) | AUTO_INCREMENT |
+| 2 | user_name | varchar(50) | NULL |
+| 3 | score | int(11) | NULL |
+| 4 | category_id | int(11) | NULL |
+| 5 | name | varchar(22) | NULL |
+| 6 | password | varchar(255) | NULL |
+
+
+
+
+
+
 
