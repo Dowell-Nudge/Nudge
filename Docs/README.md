@@ -207,7 +207,7 @@ After entering the correct credentials on the Nudge homepage for creating a new 
 | Type of Element     | Class/Id of Element                            | line in index.php     | 
 | ------------------- | ---------------------------------------------- |:---------------------:| 
 | div       | *class="navbar navbar-inverse navbar-fixed-top"* | Line 40 - 58         |
-| Header                | *<header>*                           | Line 59 - 63        |
+| Header                | *no id*                           | Line 59 - 63        |
 | div              | *class="centered"*                                    | Line 64 - 67       | 
 | Footer	| *<footer>* | Line 68 - 72 |
 
@@ -224,8 +224,8 @@ You can reach this page from anywhere on the Nudge website by clicking on the 'H
 | ------------------- | ---------------------------------------------- |:---------------------:| 
 | div       | *class="navbar navbar-inverse navbar-fixed-top"* | Line 31 - 51         |
 | div                | *id="headerwrap"*                           | Line 53 - 62        |
-| div              | *<div id="r">*                                    | Line 135 - 147       | 
-| div              | *<div id="lg">*                                    | Line 149 - 159       | 
+| div              | *id="r"*                                    | Line 135 - 147       | 
+| div              | *id="lg"*                                    | Line 149 - 159       | 
 | div	| *id="f"* | Line 163 - 171 | 
 | div              | *class="modal fade"*                               | Line 207 - 176       |
 
@@ -249,8 +249,8 @@ This page displays the team that created Nudge. There are pictures of the develo
 | div              | *class="col-lg-3"*                                    | Line 84 - 89       |
 | div              | *class="col-lg-3"*                                    | Line 91 - 96       |
 | div              | *class="col-lg-3"*                                    | Line 98 - 103       |
-| div              | *<div id="r">*                                    | Line 208 - 217        |
-| div	| *id="f"* | Line 221 - 227 | 
+| div              | *id="r"*                                    | Line 208 - 217        |
+| div	|  *id="f"*                  | Line 221 - 227 | 
 | div              | *class="modal fade"*                               | Line 232 - 263       |
 
 
