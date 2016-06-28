@@ -259,16 +259,16 @@ This page displays the team that created Nudge. There are pictures of the develo
 The name of the database utilized by Nudge is named nudge. Below are the tables and data definitions for the nudge database. There are two tables in the database, 'categories' and 'questions', which will not be mentioned because they are not used for Nudge itself.  
 
 **Nudge Database**
-| Tables | 
-| ------ | 
-| answers | 
-| comments | 
-| play | 
-| played | 
-| results | 
-| rewardss | 
-| storytable | 
-| users | 
+| # |Tables | 
+| --- |------ | 
+| 1 | answers | 
+| 2 | comments | 
+| 3 | play | 
+| 4 | played | 
+| 5 | results | 
+| 6 | rewardss | 
+| 7 | storytable | 
+| 8 | users | 
 
 ###Data Definitions for Each Table
 ***
