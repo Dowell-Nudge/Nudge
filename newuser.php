@@ -63,7 +63,7 @@ Author :muni
 	</header>
 	<div class ="centered">
 		<h2> Thank you for registering. You can now log in and use NUDGE! </h2>
-		<h2 id="loginLink"><a href="http://localhost/Nudge/index.php">Click here to login</a></h2> 
+		<h2 id="loginLink"><a href="index.php">Click here to login</a></h2> 
 	</div>
 	<footer>
 		<p class="text-center" id="foot">

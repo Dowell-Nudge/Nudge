@@ -11,7 +11,7 @@ require 'config.php';
 
 //Form Validation via PHP
 // define variables and set to empty values
-$userPassErr = $catErr = $newUserErr = $emailErr = $newPassErr = ""; //Error message variables
+$userPassErr = $catErr = $newUserErr = $emailErr = $newPassErr = $passErr = ""; //Error message variables
 $name = $email = $category = $password = ""; // login information 
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -20,9 +20,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 		$email = test_input($_POST["email"]);
 		$password = test_input($_POST["password"]);
 		if (!filter_var($email, FILTER_VALIDATE_EMAIL) === false){
-			$q2=mysqli_query($con, "SELECT * from users where name='$name'") or die(mysql_error());
-			$r2=mysqli_fetch_array($q2);						
-			if(empty($r2) == true && !empty($password == true)){
+			$q2=mysql_query("SELECT * from users where name='$name'") or die(mysql_error());
+			$r2=mysql_fetch_array($q2);						
+			if(empty($r2) == true && valid_password($password) == true){
 				//add username, email, and password to the database
 				mysqli_query($con, "INSERT INTO users (id, user_name,score,category_id,name,password )VALUES ('NULL','$email',0,5,'$name', '$password')") or die(mysql_error());
 				mysqli_query($con, "INSERT INTO played (name) VALUES('$name')") or die(mysql_error());
@@ -30,8 +30,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 			} else{
 				if(empty($password) == true){
 					$newPassErr = "Please type in a password."; 
-				} else { 
-					$newUserErr = "User name is already taken."; 
+				} else if(valid_password($password) == false) { 
+					$newPassErr = "Password must contain 1 number and be at least 5 characters long."; 
+				} else{
+					$newUserErr = "Username already taken."; 
 				}
 			}
 			
@@ -42,14 +44,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 	if (isset($_POST['currentUser'])) { // Validating login information of a current user. 
 	  $name = test_input($_POST["name"]);
 	  $email = test_input($_POST["email"]);
-	  $category = test_input($_POST["category"]); 
+	  //$category = test_input($_POST["category"]); 
 	  $q2=mysqli_query($con, "SELECT * from users where name='$name' and password='$email'") or die(mysql_error());
 	  $r2=mysqli_fetch_array($q2);
 	  
-	  if(!empty($r2) && $category != "0"){
-		$_SESSION['category'] = $category; 
+	  if(!empty($r2)){ // May need to add this back into the if statement if the menu doesn't go over well \'&& $category != "0"\'
+		//$_SESSION['category'] = $category; 
 		$_SESSION['name'] = $name;  
-		header("Location: copy2.php"); 
+		//header("Location: copy2.php");
+		header("Location: menu.php");  
 		exit(); 
 	  } else{
 		if(empty($r2)){
@@ -60,6 +63,28 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 		}
 	  }
 	} 
+}
+
+function valid_password($pass) { // A valid password will have at least 5 characters and contain at least one number
+	$flag = false; 
+	
+	if( strlen($pass) >=5 ) {
+		preg_match_all("/[0-9]/", $pass, $matches);
+		$count["num"] = count($matches[0]);
+		
+		if($count["num"] > 0){ // check if there is atleast one number character in the password
+			$flag = true; 
+		} else{
+			$passErr = "Password must contain at least one number."; 
+			$flag = false; 
+		}
+	} else {
+		$passErr = "Password must be at least 5 characters and contain one number"; 
+		$flag = false; 
+	}
+	
+	return $flag; 
+	
 }
 
 function test_input($data) {
@@ -141,14 +166,14 @@ function test_input($data) {
                                 <input type="password" id='email' name='email' class="form-control" placeholder="Enter your password"/>
                                 <span class="help-block"></span>
                             </div>
-                            <div class="form-group">
+                            <!--div class="form-group">
                                 <select class="form-control" name="category" id="category">
                                     <option value="0">Choose your category</option>
 									<option value="temptest">temptest</option>
 									<option value="Authorship">Authorship</option>
                                 </select>
                                 <span class="help-block"><?php echo $catErr;?></span>
-                            </div>
+                            </div-->
  
                             <br>
                             <button class="btn btn-success btn-block" type="submit" name="currentUser">
@@ -174,11 +199,13 @@ function test_input($data) {
                             <div class="form-group">
                                 <input type="text" id='password' name='password' class="form-control" placeholder="Enter your Password"/>
                                 <span class="help-block"><?php echo $newPassErr;?></span>
+                                <span class="help-block"><?php echo $passErr;?></span>
                             </div>
 							<br>
 							<button class="btn btn-success btn-block" type="submit" name="newUser">
                                 Next
-                            </button> 
+                            </button>
+						</form> 
 					</div> 
                         <?php }else{?>
 								 <h1>Critical Error.</h1>
@@ -188,7 +215,7 @@ function test_input($data) {
                 </div>
             </div>
         </div>
-        <footer>
+        <footer style="margin-top:120px;">
             <p class="text-center" id="foot">&copy; <a href="http://dowell.colorado.edu/" target="_blank">Dowell Lab 2014 </a></p>
         </footer>
     </body>

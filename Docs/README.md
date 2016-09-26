@@ -13,6 +13,8 @@ Shown below is a list of the main files. Each contains a combination of HTML5, C
  * [about.html](#abouthtml)   
 * MySQL Database
  * [nudge](#nudge)   
+* Comic Strip Creator
+ * http://www.storyboardthat.com/storyboard-creator    
  
 ####Program Flow for Game-Play
 index.php is used as the login/sign-up page. After login credentials are verified, they are inserted into the 'users' table in the nudge database, then copy2.php is called. This file is responsible for displaying the start of the story-line selected by the user in the dropdown category list from index.php. The beginning story-scenario is queried from the 'storytable' table and displayed. Along with the start of the selected story-line, copy2.php also renders the decisions the user can select for that starting scenario by querying the 'answers' table. Once a decision is selected by the user and they submit their answer by clicking next, storyloop.php is then called. This file renders the remaining outcomes and decisions for each storyline utilizing the 'results', 'storytable', and 'answers' tables from the nudge database. Below is a description of each file, with a user section and a technical section.      
