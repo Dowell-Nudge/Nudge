@@ -4,10 +4,11 @@ body{
 	background: linear-gradient(290deg, #95f2ee, #666b6a);
 	background-size: 400% 400%;
 
--webkit-animation: body 6s ease infinite;
+/*-webkit-animation: body 6s ease infinite;
 -moz-animation: body 6s ease infinite;
-animation: body 6s ease infinite;
+animation: body 6s ease infinite;*/
 }
+/*
 @-webkit-keyframes body {
     0%{background-position:0% 35%}
     50%{background-position:100% 66%}
@@ -22,7 +23,7 @@ animation: body 6s ease infinite;
     0%{background-position:0% 35%}
     50%{background-position:100% 66%}
     100%{background-position:0% 35%}
-}
+}*/
 
 .image-start{
     border-bottom: thick dotted black;
