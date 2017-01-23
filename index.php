@@ -20,11 +20,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 		$email = test_input($_POST["email"]);
 		$password = test_input($_POST["password"]);
 		if (!filter_var($email, FILTER_VALIDATE_EMAIL) === false){
-			$q2=mysql_query("SELECT * from users where name='$name'") or die(mysql_error());
+			$q2=mysqli_query($con, "SELECT * from users where name='$name'") or die(mysql_error());
 			$r2=mysql_fetch_array($q2);						
 			if(empty($r2) == true && valid_password($password) == true){
 				//add username, email, and password to the database
-				mysqli_query($con, "INSERT INTO users (id, user_name,score,category_id,name,password )VALUES ('NULL','$email',0,5,'$name', '$password')") or die(mysql_error());
+				mysqli_query($con, "INSERT INTO users (id, user_name,score,category_id,name,password )VALUES ('NULL','$email',0,5,'$name', PASSWORD('$password'))") or die(mysql_error());
 				mysqli_query($con, "INSERT INTO played (name) VALUES('$name')") or die(mysql_error());
 				header("Location: newuser.php"); 
 			} else{
@@ -45,7 +45,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 	  $name = test_input($_POST["name"]);
 	  $email = test_input($_POST["email"]);
 	  //$category = test_input($_POST["category"]); 
-	  $q2=mysqli_query($con, "SELECT * from users where name='$name' and password='$email'") or die(mysql_error());
+	  $q2=mysqli_query($con, "SELECT * from users where name='$name' and password=PASSWORD('$email')") or die(mysql_error());
 	  $r2=mysqli_fetch_array($q2);
 	  
 	  if(!empty($r2)){ // May need to add this back into the if statement if the menu doesn't go over well \'&& $category != "0"\'
