@@ -93,7 +93,7 @@ if(!empty($_SESSION['name'])){
         </div>
         <footer>
             <p class="text-center" id="foot">
-                &copy; <a href="http://smarttutorials.net/" target="_blank">Smart Tutorials </a>2013
+                &copy; <a href="http://smarttutorials.net/" target="_blank">Smart Tutorials </a>2017
             </p>
         </footer>
         <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->

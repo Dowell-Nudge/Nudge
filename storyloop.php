@@ -362,7 +362,7 @@ if(!empty($_SESSION['name']) and !empty($category)){
 		</hr>
 		<footer>
 			<p class="text-center" id="foot">
-				&copy; <a href="http://dowell.colorado.edu" target="_blank">Dowell Lab Home </a>2014
+				&copy; <a href="http://dowell.colorado.edu" target="_blank">Dowell Lab Home </a>2017
 			</p>
 		</footer>
 	</div>

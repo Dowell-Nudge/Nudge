@@ -128,7 +128,7 @@ if(!empty($_SESSION['name']) and !empty($category)){
 						
 						while( $row = mysqli_fetch_array($endings) ){ 
 							$ending = $row['ending']; 
-							$ending_query = mysqli_query($con, "select end_id from rewardss where end='$ending'") or die(mysqli_error());
+							$ending_query = mysqli_query($con, "select end_id from rewardss where end='$ending' and storytitle='$category'") or die(mysqli_error());
 							$end_id = mysqli_fetch_row($ending_query); 
 							array_push($current_badges, $end_id[0]); 
 						}
@@ -265,7 +265,7 @@ if(!empty($_SESSION['name']) and !empty($category)){
 
    <footer>
 		<p class="text-center" id="foot">
-			&copy; <a href="http://dowell.colorado.edu/" target="_blank">Dowell Lab </a>2013
+			&copy; <a href="http://dowell.colorado.edu/" target="_blank">Dowell Lab </a>2017
 		</p>
 	</footer>
 	<?php } else{

@@ -216,7 +216,7 @@ function test_input($data) {
             </div>
         </div>
         <footer style="margin-top:120px;">
-            <p class="text-center" id="foot">&copy; <a href="http://dowell.colorado.edu/" target="_blank">Dowell Lab 2014 </a></p>
+            <p class="text-center" id="foot">&copy; <a href="http://dowell.colorado.edu/" target="_blank">Dowell Lab 2017 </a></p>
         </footer>
     </body>
 </html>
