@@ -251,9 +251,14 @@ if(!empty($_SESSION['name']) and !empty($category)){
 				$i=1;
 				$_SESSION['gotostorylinetite'] = $gotostorylinetite; 
 				$clip = preg_replace('/\s+/', '', $_SESSION['gotostorylinetite']); 
-				print "<audio controls class=\"audio\">"; 
-				print "<source src=\"assets/img/".$category."/recordings/".$clip.".mp3\" type=\"audio/mpeg\">";
-				print "</audio>";  
+				$audioname="assets/img/".$category."/recordings/".$clip.".mp3";
+				
+				if(file_exists($audioname))
+				{
+					print "<audio controls class=\"audio\">"; 
+					print "<source src=\"$audioname\" type=\"audio/mpeg\">";
+					print "</audio>";
+				}
 				$comic = ""; 
 				$comic = $images[$storylinetitle];  
 			} else {
@@ -269,7 +274,20 @@ if(!empty($_SESSION['name']) and !empty($category)){
 						<tr>
 							<td style="width:auto;">
 								<div id="storyboard-image-large-container">
-									<?php print "<a><img src=\"".$comic."\"</a>"; ?> 
+									<?php 
+										if($comic!=NULL)
+										{
+											print "<a><img src=\"".$comic."\"</a>"; 
+										}
+									?> 
+								</div>
+								<div id="textfallback" style="color: white;">
+									<?php
+										if($comic==NULL)
+										{
+											print "<p>$thirdcol</p>";
+										}
+									?>
 								</div>
 							</td>
 						</tr>
