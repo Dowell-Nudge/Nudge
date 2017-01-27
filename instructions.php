@@ -142,7 +142,7 @@ if(!empty($_POST['name'])){
 				</div>
 				<div class="footer">
 					<p style="margin-top: -90px;" class="text-center" id="foot">
-						&copy; <a href="http://dowell.colorado.edu/" target="_blank">Dowell Lab </a>2013
+						&copy; <a href="http://dowell.colorado.edu/" target="_blank">Dowell Lab </a>2017
 					</p>
 				</div class="footer">
 			</div>

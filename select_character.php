@@ -62,6 +62,26 @@ $name = $_SESSION['name'];
 					});
 				}); 
 			});
+			
+			function redirect(storyname)
+			{
+				$.ajax({
+					url: "redirect.php",
+					type: "post",
+					data: {myData: storyname}, 
+					dataType: "text",
+					cache: false,
+					success: function(data, textStatus, jqXHR){
+						//alert( this.data + "," + this.url); test
+						var url = 'copy2.php';
+						window.location.href = url;
+					},
+					error: function(){
+						alert("Please try again."); 
+					}
+				});
+			}
+			
 			function printError(){
 				document.getElementById("char-locked").innerHTML = "Collect 4 badges to unlock the data falsification story."; 
 			}
@@ -108,7 +128,7 @@ $name = $_SESSION['name'];
 		<div class="row">
 			<div class="col-md-8 col-md-offset-2">
 				<p class="text-center user">
-					Welcome to nudge: <?php if(!empty($_SESSION['name'])){echo $_SESSION['name'];}?>
+					Welcome to Nudge: <?php if(!empty($_SESSION['name'])){echo $_SESSION['name'];} else{echo 'undefined user';}?>
 				</p>
 				<h1 class="message">
 					Choose a character: 
@@ -122,45 +142,99 @@ $name = $_SESSION['name'];
 				<table style="margin:0px auto;">
 					<tbody>
 						<tr>
-							<td style="width:auto;">
-								<div id="storyboard-image-large-container" class="character-image-large-container">
-									<?php print "<div class=\"charSmall\"><img src=\"assets/img/Authorship/AuCharacterSmall.png\"></div>"; ?> 
-									<?php print "<div class=\"charBig\"><a><img src=\"assets/img/Authorship/AuCharPose.png\"></a></div>"; ?>
-								</div>
-							</td>
-							<td style="padding: 20px;"></td>
-							<td style="width:auto;">
-								<div id="storyboard-image-large-container" class="postDoc-container" onMouseOut="hideError()">
-									<?php //Check how many badges the current user has, if they have 4 or more, then the next storyline, data falsification, is available, if not, print message error message, refer to printError() for details 										
-									$category = "Authorship"; //set $category to Authorship because badges collected from this category unlock the next one. 
-									$endings = mysqli_query($con, "select distinct ending from play where storyname='$category' and name='$name'") or die(mysql_error());
-									$current_badges = array(); 
+							<?php
+							        //Check how many badges the current user has, if they have 4 or more, then the next storyline, data falsification, is available, if not, print message error message, refer to printError() for details 										
+								$category = "Authorship"; //set $category to Authorship because badges collected from this category unlock the next one. 
+								//Note: This line used to check for storyline title AND username. Since this behavior doesn't make sense with more than just a few stories,
+								//it has been reduced to username in general.
+								$endings = mysqli_query($con, "select distinct ending from play where name='$name'") or die(mysql_error());
+								$current_badges = array();
+								
+								while( $row = mysqli_fetch_array($endings)){ 
+									$ending = $row['ending']; 
+									$ending_query = mysqli_query($con, "select end_id from rewardss where end='$ending'") or die(mysqli_error());
+									$end_id = mysqli_fetch_row($ending_query); 
+									array_push($current_badges, $end_id[0]); 
+								}
+								
+								//Look up all storylines in the storyref table:
+								$curbadgecount=count($current_badges);
+								$stories=mysqli_query($con, "select * from storystat order by minbadges") or die(mysql_error());
+								$lockedstorylist=array();
+								
+								while($row=mysqli_fetch_array($stories))
+								{
+									$minbadges=$row['minbadges'];
+									$neutralgraphic=$row['neutralgraphic'];
+									$gesturinggraphic=$row['gesturinggraphic'];
+									$lockedgraphic=$row['lockedgraphic'];
+									$storyname=$row['storyname'];
 									
-									while( $row = mysqli_fetch_array($endings) ){ 
-										$ending = $row['ending']; 
-										$ending_query = mysqli_query($con, "select end_id from rewardss where end='$ending'") or die(mysqli_error());
-										$end_id = mysqli_fetch_row($ending_query); 
-										array_push($current_badges, $end_id[0]); 
+									print "<td style=\"width:auto;\">";
+									if($curbadgecount>=$minbadges)
+									{
+										print "<div id=\"storyboard-image-large-container\" class=\"postDoc-container\" onMouseOut=\"hideError()\" onclick=\"redirect('$storyname');\">";
+										print "<div class=\"charSmall\"><img src=\"$neutralgraphic\"></div>";
+										print "<div class=\"charBig\"><a><img src=\"$gesturinggraphic\"></a></div>";
+										print "<br><h4 class=\"message\" style=\"width:auto; padding: 10px\">$storyname</h4>";
+										print "</div>";
 									}
+									
+									else
+									{
+										array_push($lockedstorylist, $storyname);
+										print "<div id=\"storyboard-image-large-container\" class=\"postDoc-container\" onMouseOut=\"hideError()\">";
+										if($lockedgraphic!=NULL)
+										{
+											print "<div class=\"charSmall\"><a><img src=\"$lockedgraphic\" onmouseover=\"printError();\"></a></div>";
+										}
 										
-									if( (count($current_badges)) >= 4 ) {
-										print "<div class=\"dataChar\"><a><img src=\"assets/img/FalseData/dataChar.png\"></a></div>"; 
-										print "<div class=\"dataChar2\"><img src=\"assets/img/FalseData/dataChar2.png\"></div>";	
-									} else { 
-										print "<div class=\"charPostSmall\"><a><img src=\"assets/img/FalseData/dataCharLocked.png\" onmouseover=\"printError();\"></a></div>"; 	
-									} 
-									?> 
-								</div>
-							</td>
+										else
+										{
+											print "<div class=\"charSmall\"><a><img src=\"$neutralgraphic\" onmouseover=\"printError();\" style=\"opacity: 30;\";></a></div>";
+										}
+										print "<br><h4 class=\"message\" style=\"width:auto; padding: 10px; color: darkgray;\">$storyname</h4>";
+										print "</div>";
+									}
+									
+									print "</td>";
+									print "<td style=\"padding: 20px;\"></td>";
+								}
+							?>
 						</tr>
 						<tr>
+							<?php
+							/*
+								$storylist=mysqli_query($con, "select storyname from storystat") or die(mysql_error());
+								
+								while($row=mysqli_fetch_array($storylist))
+								{
+									$name=$row['storyname'];
+									$locked=0;
+									
+									foreach($lockedstorylist as $lockedname)
+									{
+										# Note: Can also use strcmp and logical or if necessary.
+										if($lockedname==$name)
+										{
+											$locked=1;
+										}
+									}
+									
+									if(!$locked)
+									{
+										print "<td><h4 class=\"message\" style=\"width:auto; padding: 10px\">$name</h4></td>";
+									}
+								}*/
+							?>
+							<!--
 							<td>
 								<h4 class="message" style="width:auto;">Authorship</h4>
 							</td>
 							<td style="padding: 10px;"></td>
 							<td>
 								<div style="width:auto; margin-left: 4px;"><h4 class="message">Falsification</h4></div>
-							</td>
+							</td>-->
 						</tr>
 					</tbody>
 				</table>
@@ -171,7 +245,7 @@ $name = $_SESSION['name'];
    </div>
    <footer>
 		<p style="margin-top: 80px;" class="text-center" id="foot">
-			&copy; <a href="http://dowell.colorado.edu/" target="_blank">Dowell Lab </a>2013
+			&copy; <a href="http://dowell.colorado.edu/" target="_blank">Dowell Lab </a>2017
 		</p>
 	</footer>
 	</body>

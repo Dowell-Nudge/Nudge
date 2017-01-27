@@ -67,7 +67,7 @@ Author :muni
 	</div>
 	<footer>
 		<p class="text-center" id="foot">
-			&copy; <a href="http://dowell.colorado.edu/" target="_blank">Dowell Lab </a>2013
+			&copy; <a href="http://dowell.colorado.edu/" target="_blank">Dowell Lab </a>2017
 		</p>
 	</footer>
     </body>

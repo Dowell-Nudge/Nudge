@@ -128,7 +128,7 @@ if(!empty($_SESSION['name']) and !empty($category)){
 						
 						while( $row = mysqli_fetch_array($endings) ){ 
 							$ending = $row['ending']; 
-							$ending_query = mysqli_query($con, "select end_id from rewardss where end='$ending'") or die(mysqli_error());
+							$ending_query = mysqli_query($con, "select end_id from rewardss where end='$ending' and storytitle='$category'") or die(mysqli_error());
 							$end_id = mysqli_fetch_row($ending_query); 
 							array_push($current_badges, $end_id[0]); 
 						}
@@ -210,9 +210,14 @@ if(!empty($_SESSION['name']) and !empty($category)){
 		</div>
 		<hr>
 		<?php
-		print "<audio controls class=\"audio\">"; 
-		print "<source src=\"assets/img/".$category."/recordings/Start.mp3\" type=\"audio/mpeg\">";
-		print "</audio>"; 
+		$audioname="assets/img/".$category."/recordings/Start.mp3";
+		
+		if(file_exists($audioname))
+		{
+			print "<audio controls class=\"audio\">"; 
+			print "<source src=\"$audioname\" type=\"audio/mpeg\">";
+			print "</audio>"; 
+		}
 		?>
 		<?php
 		$res = mysqli_query($con, "select * from storytable where storytitle='$category' and position=0") or die(mysqli_error());
@@ -221,7 +226,8 @@ if(!empty($_SESSION['name']) and !empty($category)){
 		$thirdcol = $row[3];
 		$i=1;
 		$comic = ""; 
-		$comic = $images[$storylinetitle]; 
+		$comic = $images[$storylinetitle];
+		
 		?>
 		<div class="row">
 			<div class="col-md-12 ">
@@ -230,7 +236,20 @@ if(!empty($_SESSION['name']) and !empty($category)){
 						<tr>
 							<td style="width:auto;">
 								<div id="storyboard-image-large-container">
-									<?php print "<a><img src=\"".$comic."\"</a>"; ?> 
+									<?php 
+										if($comic!=NULL)
+										{
+											print "<a><img src=\"".$comic."\"</a>"; 
+										}
+									?> 
+								</div>
+								<div id="textfallback" style="color: white;">
+									<?php 
+										if($comic==NULL)
+										{
+											print "<p>$thirdcol</p>";
+										}
+									?>
 								</div>
 							</td>
 						</tr>
@@ -243,8 +262,8 @@ if(!empty($_SESSION['name']) and !empty($category)){
 				<span class="help-block"><?php echo $answerErr;?></span>
 				<form class="form-horizontal" role="form" id='login' method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">
 					<?php
-					$_SESSION['storylinetite']='start';
-					$res2 = mysqli_query($con, "select * from answers where storylinetite='start' and storytitle='$category';") or die(mysqli_error());
+					$_SESSION['storylinetite']=$storylinetitle; //'start';
+					$res2 = mysqli_query($con, "select * from answers where storylinetite='$storylinetitle' and storytitle='$category';") or die(mysqli_error());
 					$n=1;
 					?>
 					<div id='question<?php echo $i;?>' class='cont answers' style="margin-top: -20px;">
@@ -265,7 +284,7 @@ if(!empty($_SESSION['name']) and !empty($category)){
 
    <footer>
 		<p class="text-center" id="foot">
-			&copy; <a href="http://dowell.colorado.edu/" target="_blank">Dowell Lab </a>2013
+			&copy; <a href="http://dowell.colorado.edu/" target="_blank">Dowell Lab </a>2017
 		</p>
 	</footer>
 	<?php } else{

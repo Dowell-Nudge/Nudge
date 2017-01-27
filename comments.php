@@ -110,7 +110,7 @@
 	<div id="f">
 		<div class="container">
 			<div class="row centered">
-				© 2014 Dowell Laboratory | University of Colorado Boulder				
+				© 2017 Dowell Laboratory | University of Colorado Boulder				
 			</div><!-- row -->
 		</div><!-- container -->
 	</div><!-- Footer -->

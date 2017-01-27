@@ -76,7 +76,7 @@ mysql_query("INSERT INTO comments (id, name, email, comment)VALUES ('NULL','$nam
 
        <footer>
             <p class="text-center" id="foot">
-                &copy; <a href="http://dowell.colorado.edu/" target="_blank">Dowell Lab </a>2013
+                &copy; <a href="http://dowell.colorado.edu/" target="_blank">Dowell Lab </a>2017
             </p>
         </footer>
  

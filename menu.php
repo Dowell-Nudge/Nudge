@@ -126,7 +126,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 					</div>
 					<footer>
 						<p style="margin-top: 40px;" class="text-center" id="foot">
-							&copy; <a href="http://dowell.colorado.edu/" target="_blank">Dowell Lab </a>2013
+							&copy; <a href="http://dowell.colorado.edu/" target="_blank">Dowell Lab </a>2017
 						</p>
 					</footer>
 				</div>
