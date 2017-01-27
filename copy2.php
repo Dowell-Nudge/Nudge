@@ -243,7 +243,7 @@ if(!empty($_SESSION['name']) and !empty($category)){
 										}
 									?> 
 								</div>
-								<div id="textfallback" class="col-md-10 col col-md-offset-1">
+								<div id="textfallback" style="color: white;">
 									<?php 
 										if($comic==NULL)
 										{

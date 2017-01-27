@@ -319,7 +319,7 @@ if(!empty($_SESSION['name']) and !empty($category)){
 		<?php  
 		$K=$row[0];
 		
-		$final= mysqli_query($con, "select * from rewardss where end_id='$K';") or die(_error());
+		$final= mysqli_query($con, "select * from rewardss where end_id='$K' and storytitle='$category';") or die(_error());
 		$finalrow = mysqli_fetch_row($final);
 		
 		$statement = $finalrow[2];
@@ -358,7 +358,7 @@ if(!empty($_SESSION['name']) and !empty($category)){
 				<h3> Worth  <?php print($points); ?>  points! </h3>
 				<?php  
 				mysqli_query($con, "UPDATE users SET score=$total WHERE name ='$name';"); 
-				$tots2 = mysqli_query($con, "SELECT COUNT(*) from rewardss;");
+				$tots2 = mysqli_query($con, "SELECT COUNT(*) from rewardss where storytitle='$category';");
 				$tots = mysqli_fetch_row($tots2);
 				?>
 				<br>
